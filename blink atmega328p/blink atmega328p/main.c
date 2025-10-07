@@ -5,13 +5,13 @@
  *  Author: edson macedo de almeida 
  */ 
 
-#define F_CPU 16000000UL   // Define clock em 8 MHz (igual ao do seu MCU)
+#define F_CPU 16000000UL   // Define clock em 16 MHz
 #include <avr/io.h>
 #include <util/delay.h>
 
 int main(void)
 {
-	DDRB = 0xFF;          // Configura todos os pinos do PORTB como saída
+	DDRB = 0xFF;          // Configura todos os pinos do PORTB como saÃ­da
 	PORTB = 0x00;         // Inicializa todos os pinos em LOW
 
 	while (1)
