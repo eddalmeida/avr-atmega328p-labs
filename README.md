@@ -192,6 +192,14 @@ Este repositório é útil para:
 
 ---
 
+## 📚 Base de estudo
+
+Parte dos estudos e exercícios deste repositório é inspirada nos exercicios do livro:
+
+- [**AVR e Arduino: Técnicas de Projeto** — Charles Borges de Lima e Marco V. M. Villaça](https://clubedeautores.com.br/livro/avr-e-arduino-tecnicas-de-projeto)
+  
+---
+
 ## Licença
 
 Este repositório é voltado para fins de estudo e aprendizado.
