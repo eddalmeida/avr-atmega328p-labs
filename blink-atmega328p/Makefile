@@ -1,17 +1,24 @@
 MCU = atmega328p
 F_CPU = 16000000UL
+
 CC = avr-gcc
 OBJCOPY = avr-objcopy
-CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU) -Os -Wall -c
-
 
 TARGET = main
 SRC = src/main.c
 
-all:
-	$(CC) $(CFLAGS) $(SRC) -o $(TARGET).o
-	$(CC) $(TARGET).o -o $(TARGET).elf
-	$(OBJCOPY) -O ihex -R .eeprom $(TARGET).elf $(TARGET).hex
+CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU) -Os -Wall
+
+all: $(TARGET).hex
+
+$(TARGET).o: $(SRC)
+	$(CC) $(CFLAGS) -c $< -o $@
+
+$(TARGET).elf: $(TARGET).o
+	$(CC) -mmcu=$(MCU) $< -o $@
+
+$(TARGET).hex: $(TARGET).elf
+	$(OBJCOPY) -O ihex -R .eeprom $< $@
 
 clean:
 	rm -f *.o *.elf *.hex
