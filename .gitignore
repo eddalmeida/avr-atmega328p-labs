@@ -1,0 +1,42 @@
+# =========================
+# AVR build artifacts
+# =========================
+*.o
+*.d
+*.elf
+*.hex
+*.eep
+*.map
+*.lst
+*.lss
+*.sym
+*.bin
+*.srec
+
+
+# =========================
+# Legacy IDE folders/files
+# =========================
+.vs/
+
+# =========================
+# VS Code
+# Keep only useful project config
+# =========================
+.vscode/*
+!.vscode/c_cpp_properties.json
+!.vscode/tasks.json
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# =========================
+# OS / editor temp files
+# =========================
+*.log
+*.tmp
+*.swp
+*.swo
+*~
+
+.DS_Store
+Thumbs.db
