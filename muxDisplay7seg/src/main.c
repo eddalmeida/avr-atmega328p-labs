@@ -1,16 +1,16 @@
 #include <avr/io.h>
 #include "avr/pgmspace.h"                                          //Biblioteca para escrever na flash
-#include <util/delay.h>                                            //Biblioteca para utilizar delay
+#include <util/delay.h>                                            
 #include <stdint.h>
 
 
-#define read(PINx, Px) ((PINx & (1 << Px)) >> Px)                 //macro para ler botï¿½o e retornar 1 ou 0
+#define read(PINx, Px) ((PINx & (1 << Px)) >> Px)                  //macro para ler botï¿½o e retornar 1 ou 0
 #define set_bit(PORTx, Px) (PORTx |= (1 << Px))                    //macro para colocar pino como alto
-#define clr_bit(PORTx, Px) (PORTx &= !(1 << Px))                   //macro para colocar pino como baixo
+#define clr_bit(PORTx, Px) (PORTx &= ~(1 << Px))                   //macro para colocar pino como baixo
 
-#define btn1 PB2                                                   //define botï¿½o1 no PB0
-#define btn2 PB3                                                   //define botï¿½o2 no PB0
-#define DISPLAY PORTD                                              //define display no PORTD
+#define btn1 PB2                                                   
+#define btn2 PB3                                                   
+#define DISPLAY PORTD                                              
 
 
 
@@ -25,19 +25,19 @@ void display_print(int valor);                                       //declaraï¿
 
 int main(void)
 {
-	DDRB = 0b11110011;                                               //configura PORTB como saida
+	DDRB = 0x03;                                                     //configura PORTB como saida
     DDRD = 0xFF;                                                     //configura PORTD como saida
-	PORTB = 0b00001100;                                              //Inicia PORTB como 0 e ativa pull-up PB2 e PB3
+	PORTB = 0x0C;                                                    //Inicia PORTB como 0 e ativa pull-up PB2 e PB3
 	PORTD = 0x00;                                                    //Inicia PORTD como 0
 	UCSR0B = 0x00;                                                   //Condigura PD0 e PD1 como I/O
 	
-	uint8_t contador = 0;                                       //variavel contador
+	uint8_t contador = 0;                                              
 	
     while (1) 
     {
 		
-		uint8_t botao1 = read(PINB, btn1);                          //armazena valor do botao1 
-		uint8_t botao2 = read(PINB, btn2);                          //amarzena estado anterior do botï¿½o para ler apenas 1 vez
+		uint8_t botao1 = read(PINB, btn1);                          
+		uint8_t botao2 = read(PINB, btn2);                          
 		
 		
 		if (botao1 == 0 && estadoant1 == 1)                           //leitura botï¿½o de decrementar
@@ -48,7 +48,7 @@ int main(void)
 		}
 		
 		   
-		if (botao2 == 0 && estadoant2 == 1)                           //leitura de botï¿½o de decrementar 
+		if (botao2 == 0 && estadoant2 == 1)                           //leitura de botï¿½o de incrementar 
 		{ 
 			contador--;
 			_delay_ms(10);
@@ -69,14 +69,14 @@ int main(void)
 void display_print(int valor)                                         //funï¿½ï¿½o multiplexaï¿½ï¿½o display 7 segmentos
 {
 	int digito1 = valor / 10;                                         // separa o numero mais significativo
-	int digito2 = valor - (digito1 * 10);                             // separa o numero menos significativo
+	int digito2 = valor % 10;                                         // separa o numero menos significativo
 	
 	DISPLAY = 0x00;                                                   // limpa display antes de colocar valor
 	clr_bit(PORTB, PB1);                                         
 	set_bit(PORTB, PB0);                                              // seleciona para escrever no display da direita
 	DISPLAY =  pgm_read_byte(&numero[digito2]);
 	
-	_delay_ms(5);
+	_delay_ms(0);
 	
 	DISPLAY = 0x00;
 	clr_bit(PORTB, PB0);
