@@ -20,104 +20,77 @@ LIMA, Charles Borges; VILLAÇA, Marco V. M.
 #include <util/delay.h>
 #include <stdint.h>
 #include "../headers/macros.h"
+#include "../headers/sequencial.h"
 
-void vaiEvolta();
-void vaiEvolta_unico_led();
-void vaiEvolta_apagando();
-void contagemBinaria_crescente();
-void contagemBinaria_decrescente();
 
 
 
 int main()
 {
+    DDRB = 0x00;
     DDRD = 0xFF;
-    PORTD = 0x00;
 
+    PORTD = 0x00;
+    PORTB = 0x03;
+
+    uint8_t contador = 1;
+    uint8_t antbtn2 = 1;
+    
     while(1)
     {
-        vaiEvolta();
-        vaiEvolta_unico_led();
-        vaiEvolta_apagando();
-        contagemBinaria_crescente();
-        contagemBinaria_decrescente();
+        uint8_t btn1 = read(PINB, PB0);
+        uint8_t btn2 = read(PINB, PB1);
+
+        if(btn1 == 0)
+        {
+            _delay_ms(10);
+            if (read(PINB, PB0) == 0)
+            {
+                if (btn2 == 0 && antbtn2 == 1)
+                {
+                    contador++;
+                    if(contador > 7)contador = 1;
+                }
+                
+            }    
+            
+            PORTD = contador;
+        }
+
+        if(btn1 == 1){
+            switch (contador)
+            {
+                case 1:
+                    vaiEvolta();
+                    break;
+    
+                case 2:
+                    vaiEvolta_unico_led();
+                    break; 
+                
+                case 3:
+                    vaiEvolta_apagando();
+                    break;
+    
+                case 4:
+                    contagemBinaria_crescente();
+                    break; 
+
+                case 5:
+                    contagemBinaria_decrescente();
+                    break;
+    
+                case 6:
+                    strobe();
+                    break; 
+                case 7:
+                    vaiEvolta_unico_led();
+                    strobe();
+                    break; 
+            }
+        }
+
+        antbtn2 = btn2;
     }
 }
 
-void vaiEvolta()
-{
-    for(uint8_t i = 0; i < 8; i++)
-        {
-            PORTD |= (1 << i);
-            _delay_ms(100);           
-        }
-
-        PORTD = 0x00;
-        _delay_ms(60);
-
-        for(int8_t i = 7; i >= 0; i--)
-        {
-            PORTD |= (1 << i);
-            _delay_ms(60);           
-        }
-
-        PORTD = 0x00; 
-        _delay_ms(100);
-}
-
-void vaiEvolta_unico_led()
-{
-    for(uint8_t i = 0; i < 8; i++)
-        {
-            PORTD = (1 << i);
-            _delay_ms(35);           
-        }
-
-        PORTD = 0x00;
-        _delay_ms(100);
-
-        for(int8_t i = 7; i >= 0; i--)
-        {
-            PORTD = (1 << i);
-            _delay_ms(35);           
-        }
-
-        PORTD = 0x00; 
-        _delay_ms(100);
-}
-
-void vaiEvolta_apagando()
-{
-        for(uint8_t i = 0; i < 8; i++)
-        {
-            PORTD |= (1 << i);
-            _delay_ms(100);           
-        }
-
-        _delay_ms(100);
-
-        for(int8_t i = 7; i >= 0; i--)
-        {
-            PORTD &= ~(1 << i);
-            _delay_ms(100);           
-        }
-
-        _delay_ms(100);
-}
-
-void contagemBinaria_crescente()
-{
-    for(uint8_t i = 0; i < 255; i++)
-    {
-        PORTD = i;
-        _delay_ms(70);
-    }
-}
-void contagemBinaria_decrescente()
-{
-    for(int16_t i = 255; i >= 0; i--)
-    {
-        PORTD = i;
-        _delay_ms(70);
-    }
-}

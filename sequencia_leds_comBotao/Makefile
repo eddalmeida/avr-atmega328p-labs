@@ -10,29 +10,24 @@ BAUD = 115200
 PROGRAMMER = arduino
 
 TARGET = main
-SRC = src/main.c src/sequencial.c
-
-OBJ = $(SRC:.c=.o)
+SRC = src/main.c
 
 CFLAGS = -mmcu=$(MCU) -DF_CPU=$(F_CPU) -Os -Wall
 
 all: $(TARGET).hex
 
-# Compila cada .c separadamente
-%.o: %.c
+$(TARGET).o: $(SRC)
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Linka tudo
-$(TARGET).elf: $(OBJ)
-	$(CC) $(CFLAGS) $^ -o $@
+$(TARGET).elf: $(TARGET).o
+	$(CC) -mmcu=$(MCU) $< -o $@
 
-# Gera hex
 $(TARGET).hex: $(TARGET).elf
 	$(OBJCOPY) -O ihex -R .eeprom $< $@
 
-# Upload
+# 🔥 Upload pro Arduino Uno
 flash: $(TARGET).hex
 	$(AVRDUDE) -c $(PROGRAMMER) -p $(MCU) -P $(PORT) -b $(BAUD) -U flash:w:$(TARGET).hex:i
 
 clean:
-	rm -f src/*.o *.elf *.hex
+	rm -f *.o *.elf *.hex
