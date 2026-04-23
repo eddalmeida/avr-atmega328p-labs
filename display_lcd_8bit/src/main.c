@@ -31,7 +31,7 @@ LIMA, Charles Borges; Marco V. M. VILLAÇA.
 //============================PROTOTIPOS DE FUNCOES====================================
 void cmd_LCD(uint8_t c, uint8_t cd);             //C byte,  e CD instrucao ou caractere
 void init_lcd();                                 //Rotina para iniciar conforme Datasheet
-void printf_lcd(const char *c);         //Print de string
+void printf_lcd(const char *c);                  //Print de string
 //=====================================================================================
 
 const unsigned char msg1[] PROGMEM = "Ola display!";
