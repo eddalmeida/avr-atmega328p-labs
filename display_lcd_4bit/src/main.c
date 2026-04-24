@@ -24,8 +24,34 @@ LIMA, Charles Borges; Marco V. M. VILLAÇA.
 
 int main()
 {
+    DDRB = 0xFF;
+    DDRD = 0xFF;
+    CONTR_LCD = 0x00;
+    DADOS_LCD = 0x00;
+
+    init_lcd();
+
+    for(int8_t i = 0; i < 16; i++)
+    {
+        cmd_LCD('*', 1);
+            
+    }
+
     while(1)
     {
+        for(int8_t i = 0; i < 16; i++)
+        {
+            cmd_LCD((0x80 + i), 0);
+            _delay_ms(30);
+        }
+
+        for(int8_t i = 0; i < 16; i++)
+        {
+            cmd_LCD((0x8F - i), 0);
+            _delay_ms(30);
+        }
+        
+
     }
 }
 
